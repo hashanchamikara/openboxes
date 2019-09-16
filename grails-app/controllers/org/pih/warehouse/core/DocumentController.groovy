@@ -16,6 +16,10 @@ import org.pih.warehouse.order.Order
 import org.pih.warehouse.product.Product
 import org.pih.warehouse.requisition.Requisition
 import org.pih.warehouse.shipping.Shipment
+import org.pih.warehouse.inventory.InventoryItem
+import org.pih.warehouse.order.Order
+import org.pih.warehouse.requisition.Requisition
+import org.pih.warehouse.shipping.Shipment
 import org.springframework.web.multipart.MultipartFile
 import util.FileUtil
 import org.pih.warehouse.core.Constants
@@ -24,7 +28,8 @@ class DocumentController {
 
     def fileService
     def grailsApplication
-    def templateService
+    GroovyPagesTemplateEngine groovyPagesTemplateEngine
+
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -422,7 +427,7 @@ class DocumentController {
         InventoryItem inventoryItem = InventoryItem.load(params?.inventoryItem?.id)
 
         Map model = [document: document, inventoryItem: inventoryItem, location: location]
-        String renderedContent = templateService.renderTemplate(document, model)
+        String renderedContent = renderTemplate(document, model)
 
         try {
             if (params.protocol=="usb") {
@@ -454,7 +459,7 @@ class DocumentController {
         InventoryItem inventoryItem = InventoryItem.load(params.inventoryItem?.id)
         Location location = Location.load(session.warehouse.id)
         Map model = [document: document, inventoryItem: inventoryItem, location: location]
-        String renderedContent = templateService.renderTemplate(document, model)
+        String renderedContent = renderTemplate(document, model)
         log.info "renderedContent: ${renderedContent}"
         render(renderedContent)
     }
@@ -464,7 +469,7 @@ class DocumentController {
         InventoryItem inventoryItem = InventoryItem.load(params.inventoryItem?.id)
         Location location = Location.load(session.warehouse.id)
         Map model = [document: document, inventoryItem: inventoryItem, location: location]
-        String body = templateService.renderTemplate(document, model)
+        String body = renderTemplate(document, model)
         String contentType = "image/png"
 
         def http = new HTTPBuilder("http://api.labelary.com/v1/printers/8dpmm/labels/2x1/0/".toString())
@@ -481,10 +486,27 @@ class DocumentController {
         InventoryItem inventoryItem = InventoryItem.load(params.inventoryItem?.id)
         Location location = Location.load(session.warehouse.id)
         Map model = [document: document, inventoryItem: inventoryItem, location: location]
-        String renderedContent = templateService.renderTemplate(document, model)
+        String renderedContent = renderTemplate(document, model)
         String url = "http://labelary.com/viewer.html?zpl=" + renderedContent
         redirect(url: url)
     }
+
+
+    private String renderTemplate(Document document, Map model) {
+        String templateContent = new String(document.fileContents)
+        Template template =
+                groovyPagesTemplateEngine.createTemplate(templateContent, document.name)
+
+        log.info "Template content: " + templateContent
+        log.info "Model: " + model
+
+        Writable renderedTemplate = template.make(model)
+        StringWriter stringWriter = new StringWriter()
+        renderedTemplate.writeTo(stringWriter)
+        return stringWriter.toString()
+    }
+
+
 }
 
 /**

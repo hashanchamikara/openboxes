@@ -178,6 +178,7 @@ class DashboardController {
         render results as JSON
     }
 
+    @Cacheable("megamenuCache")
     def megamenu = {
 
         def user = User.get(session?.user?.id)
