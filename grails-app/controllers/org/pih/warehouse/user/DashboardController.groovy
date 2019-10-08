@@ -182,7 +182,7 @@ class DashboardController {
     }
 
     def footer = {
-        render(template: "/common/footer", model: [gitProperties:gitProperties, buildProperties: buildProperties, infoProperties: infoProperties])
+        render(template: "/common/footer", model: [gitProperties:gitProperties])
     }
 
     //@Cacheable("megamenuCache")
