@@ -1762,6 +1762,8 @@ class StockMovementService {
         }
 
         picklistItems.each { PicklistItem picklistItem ->
+            picklistItem.picklist.removeFromPicklistItems(picklistItem)
+            requisitionItem.removeFromPicklistItems(picklistItem)
             picklistItem.delete()
         }
     }
