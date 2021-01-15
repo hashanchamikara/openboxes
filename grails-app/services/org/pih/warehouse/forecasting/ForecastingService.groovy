@@ -15,7 +15,7 @@ import groovy.sql.Sql
 import groovy.time.TimeCategory
 import org.pih.warehouse.core.Location
 import org.pih.warehouse.product.Product
-import org.pih.warehouse.util.DateUtil
+import org.pih.warehouse.DateUtil
 
 import java.sql.Timestamp
 import java.text.DateFormatSymbols
