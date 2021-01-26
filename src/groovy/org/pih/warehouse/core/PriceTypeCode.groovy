@@ -1,0 +1,13 @@
+package org.pih.warehouse.core
+
+enum PriceTypeCode {
+    AVERAGE_COST,
+    COMPETITIVE_PRICE,
+    DEFAULT_PRICE,
+    LIST_PRICE,
+    MAXIMUM_PRICE,
+    MINIMUM_PRICE,
+    PROMO_PRICE,
+    SPECIAL_PROMO_PRICE,
+    WHOLESALE_PRICE
+}

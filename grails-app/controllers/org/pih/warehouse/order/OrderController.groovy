@@ -80,7 +80,7 @@ class OrderController {
                 "Quantity Ordered" { it.quantityOrdered }
                 "Quantity Shipped" { it.quantityShipped}
                 "Quantity Received" { it.quantityReceived}
-                "Unit Price" { it.unitPrice}
+                "Unit ProductPrice" { it.unitPrice}
                 "Total Cost" { it.totalCost}
                 "Recipient" { it.recipient}
                 "Estimated Ready Date" { it.estimatedReadyDate}
